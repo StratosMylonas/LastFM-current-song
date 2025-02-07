@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require("express");
 const axios = require("axios");
+const cron = require("node-cron");
 const app = express();
 
 app.get("/", (req, res) => {
@@ -9,12 +10,12 @@ app.get("/", (req, res) => {
 });
 
 // Load environment variables
+const LASTFM_USERNAME = process.env.LASTFM_USERNAME;
 const LASTFM_API_KEY = process.env.LASTFM_API_KEY;
-const USERNAME = "primitiveblast";
 
 app.get("/lastfm", async (req, res) => {
     try {
-        const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USERNAME}&api_key=${LASTFM_API_KEY}&format=json`;
+        const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_API_KEY}&format=json`;
         const response = await axios.get(url);
         const tracks = response.data.recenttracks.track;
 
@@ -35,6 +36,17 @@ app.get("/lastfm", async (req, res) => {
         res.send("Error fetching song data.");
     }
 });
+
+// Schedule a cron job to keep the app alive (every 5 minutes)
+cron.schedule("*/5 * * * *", async () => {
+    try {
+      // Ping the home route or any endpoint of your app to keep it alive
+      await axios.get("http://localhost:3000");  // Or the live URL if hosted
+      console.log("Pinged server to keep it alive.");
+    } catch (error) {
+      console.error("Error pinging server:", error);
+    }
+  });
 
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => console.log(`Server running on port ${port}`));
