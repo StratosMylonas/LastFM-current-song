@@ -38,7 +38,7 @@ app.get("/lastfm", async (req, res) => {
 });
 
 // Schedule a cron job to keep the app alive (every 5 minutes)
-cron.schedule("*/1 * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
     try {
       // Ping the home route or any endpoint of your app to keep it alive
       await axios.get("https://lastfm-current-song.onrender.com/lastfm");  // Or the live URL if hosted
