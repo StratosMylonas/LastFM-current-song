@@ -22,10 +22,11 @@ You can see the app live (if deployed on any server) at:
 2. Install dependencies:
    ```bash
    npm install
-3. Create a .env file in the root directory of your project to store your LastFM API key and other environment variables (the .env file is ignored by Git, so it won't be uploaded to GitHub).
+3. Create a .env file in the root directory of your project to store your LastFM API key and username and other environment variables (the .env file is ignored by Git, so it won't be uploaded to GitHub).
    Example .env file:
    ```bash
    LASTFM_API_KEY=your_actual_api_key_here
+   LASTFM_USERNAME=your_lastfm_username_here
 4. Run the app locally:
    ```bash
    node index.js
